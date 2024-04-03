@@ -3,13 +3,13 @@ import 'package:flutter_form_google/src/data/models/form.dart';
 import 'package:flutter_form_google/src/data/models/question.dart';
 
 class CreateFormState extends Equatable {
-  final List<MQuestion> listFormData;
+  final List<MQuestion> questions;
   final String titleForm;
-  final bool isEditTitile;
+  final bool isEditTitle;
   const CreateFormState({
-    required this.listFormData,
+    required this.questions,
     required this.titleForm,
-    required this.isEditTitile,
+    this.isEditTitle = false,
   });
 
   bool get isEmptyForm {
@@ -17,36 +17,34 @@ class CreateFormState extends Equatable {
     return listFormData.any((element) => element.question.isEmpty);
   }
 
-  factory CreateFormState.ds(MFormData? mFormData) {
-    if (mFormData != null) {
+  factory CreateFormState.ds(MFormData? editFormData) {
+    if (editFormData != null) {
       return CreateFormState(
-          listFormData: mFormData.questions,
-          titleForm: mFormData.title,
-          isEditTitile: false);
+        questions: editFormData.questions,
+        titleForm: editFormData.title,
+      );
     } else {
       return CreateFormState(
-          listFormData: [MQuestion.empty()],
-          titleForm: "Untitled form",
-          isEditTitile: false);
+          questions: [MQuestion.empty()], titleForm: "Untitled form");
     }
   }
 
   CreateFormState copyWith({
-    List<MQuestion>? listFormData,
+    List<MQuestion>? questions,
     String? titleForm,
-    bool? isEditTitile,
+    bool? isEditTitle,
   }) {
     return CreateFormState(
-      listFormData: listFormData ?? this.listFormData,
+      questions: questions ?? this.questions,
       titleForm: titleForm ?? this.titleForm,
-      isEditTitile: isEditTitile ?? this.isEditTitile,
+      isEditTitle: isEditTitle ?? this.isEditTitle,
     );
   }
 
   @override
   List<Object> get props => [
-        listFormData,
-        isEditTitile,
+        questions,
+        isEditTitle,
         titleForm,
       ];
 }

@@ -17,4 +17,6 @@ void main() async {
   GetIt.I.registerSingleton(userPrefs);
 
   runApp(MyApp(setting: settingsController));
+
+
 }
