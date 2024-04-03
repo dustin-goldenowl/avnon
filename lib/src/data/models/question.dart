@@ -1,70 +1,81 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:flutter_form_google/src/data/models/question_type.dart';
-
 class MQuestion {
-  int id;
-  MQuestionType type;
-  String title;
-  List<Option> option;
-
+  final String question;
+  final List<String> resultOption;
+  final int indexSelected;
+  final String resultParagraph;
+  final String? image;
+  final bool isRequired;
+  final int optionQuestion;
   MQuestion({
-    required this.id,
-    required this.type,
-    required this.title,
-    required this.option,
+    required this.question,
+    required this.resultOption,
+    required this.resultParagraph,
+    this.image,
+    required this.isRequired,
+    required this.optionQuestion,
+    required this.indexSelected,
   });
+
+  MQuestion copyWith({
+    String? question,
+    List<String>? resultOption,
+    String? resultParagraph,
+    String? image,
+    bool? isRequired,
+    int? optionQuestion,
+    int? indexSelected,
+  }) {
+    return MQuestion(
+      question: question ?? this.question,
+      resultOption: resultOption ?? this.resultOption,
+      resultParagraph: resultParagraph ?? this.resultParagraph,
+      image: image ?? this.image,
+      isRequired: isRequired ?? this.isRequired,
+      optionQuestion: optionQuestion ?? this.optionQuestion,
+      indexSelected: indexSelected ?? this.indexSelected,
+    );
+  }
+
+  static MQuestion empty() {
+    return MQuestion(
+      question: "",
+      resultOption: ["Option 1", "Option 2"],
+      resultParagraph: "",
+      image: null,
+      isRequired: false,
+      optionQuestion: 1,
+      indexSelected: 0,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
-      'title': title,
-      'option': option.map((x) => x.toMap()).toList(),
+      'question': question,
+      'resultOption': resultOption,
+      'resultParagraph': resultParagraph,
+      'image': image,
+      'isRequired': isRequired,
+      'optionQuestion': optionQuestion,
+      'indexSelected': indexSelected,
     };
   }
+
+  String toJson() => json.encode(toMap());
 
   factory MQuestion.fromMap(Map<String, dynamic> map) {
     return MQuestion(
-      id: map['id'] as int,
-      title: map['title'] as String,
-      type: MQuestionType.fromMap(map['type'] as String),
-      option: List<Option>.from(
-        (map['option'] as List<int>).map<Option>(
-          (x) => Option.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      question: map['question'] as String,
+      resultOption: List<String>.from((map['resultOption'] as List<String>)),
+      resultParagraph: map['resultParagraph'] as String,
+      image: map['image'] != null ? map['image'] as String : null,
+      isRequired: map['isRequired'] as bool,
+      optionQuestion: map['optionQuestion'] as int,
+      indexSelected: map['indexSelected'] as int,
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   factory MQuestion.fromJson(String source) =>
       MQuestion.fromMap(json.decode(source) as Map<String, dynamic>);
-}
-
-class Option {
-  String title;
-  bool otherSpecify;
-
-  Option({required this.otherSpecify, required this.title});
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'title': title,
-      'otherSpecify': otherSpecify,
-    };
-  }
-
-  factory Option.fromMap(Map<String, dynamic> map) {
-    return Option(
-      title: map['title'] as String,
-      otherSpecify: map['otherSpecify'] as bool,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory Option.fromJson(String source) =>
-      Option.fromMap(json.decode(source) as Map<String, dynamic>);
 }
