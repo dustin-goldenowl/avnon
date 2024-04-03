@@ -10,7 +10,8 @@ import 'package:flutter_form_google/src/widget/option_item_view.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateFormPage extends StatefulWidget {
-  const CreateFormPage({super.key});
+  const CreateFormPage({super.key, this.editFormData});
+  final MFormData? editFormData;
 
   static const routeName = '/create';
 
@@ -22,37 +23,36 @@ class _CreateFormPageState extends State<CreateFormPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CreateFormCubit(),
+      create: (context) => CreateFormCubit(widget.editFormData),
       child: BlocBuilder<CreateFormCubit, CreateFormState>(
           builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
-              title: const Text("Create Form"),
+              title: Text(
+                  widget.editFormData != null ? "Edit Form" : "Create Form"),
               actions: [
-                InkWell(
-                    onTap: () {
-                      context.read<HomeBloc>().addNewForm(MFormData(
-                          id: Uuid().v4(),
-                          title: state.titleForm,
-                          questions: state.listFormData));
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.purple,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 7),
-                          child: Text(
-                            "Send",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ))
+                Opacity(
+                  opacity: state.isEmptyForm ? 0.5 : 1,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (state.isEmptyForm) return;
+                        Navigator.pop(context);
+                        if (widget.editFormData != null) {
+                          context.read<HomeBloc>().editNewForm(MFormData(
+                              id: widget.editFormData!.id,
+                              title: state.titleForm,
+                              questions: state.listFormData));
+                        } else {
+                          context.read<HomeBloc>().addNewForm(MFormData(
+                              id: const Uuid().v4(),
+                              title: state.titleForm,
+                              questions: state.listFormData));
+                        }
+                      },
+                      child: Text(
+                        widget.editFormData != null ? "Edit" : "Send",
+                      )),
+                )
               ],
             ),
             body: _body(context),
@@ -66,12 +66,15 @@ class _CreateFormPageState extends State<CreateFormPage> {
   }
 
   Widget _body(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        _titleForm(context),
-        Expanded(child: _listFormQuestion()),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          _titleForm(context),
+          Expanded(child: _listFormQuestion()),
+        ],
+      ),
     );
   }
 
@@ -81,11 +84,10 @@ class _CreateFormPageState extends State<CreateFormPage> {
       return ListView.builder(
           itemCount: state.listFormData.length,
           itemBuilder: (context, position) {
-            return _itemAddQuestion(
-              context,
-              model: state.listFormData[position],
-              position: position,
-            );
+            return _itemAddQuestion(context,
+                model: state.listFormData[position],
+                position: position,
+                isBottom: state.listFormData.length == position + 1);
           });
     });
   }
@@ -94,6 +96,7 @@ class _CreateFormPageState extends State<CreateFormPage> {
     return BlocBuilder<CreateFormCubit, CreateFormState>(
         builder: (context, state) {
       return Container(
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         alignment: Alignment.centerLeft,
         child: state.isEditTitile
             ? InputWidget(
@@ -121,29 +124,36 @@ class _CreateFormPageState extends State<CreateFormPage> {
   }
 
   Widget _itemAddQuestion(BuildContext context,
-      {required MQuestion model, required int position}) {
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding:
-            const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
-        child: Column(
-          children: [
-            _rowInputAndPickImage(
-              context,
-              value: model.question,
-              position: position,
-            ),
-            _dropdownBox(context, model: model, position: position),
-            model.optionQuestion == 2
-                ? _paragrahpView(context, model: model, position: position)
-                : _radioBox(context, position: position),
-            _bottomView(
-              context,
-              model: model,
-              position: position,
-            )
-          ],
+      {required MQuestion model,
+      required int position,
+      required bool isBottom}) {
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: isBottom ? 40 : 10,
+      ),
+      child: Card(
+        elevation: 2,
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
+          child: Column(
+            children: [
+              _rowInputAndPickImage(
+                context,
+                value: model.question,
+                position: position,
+              ),
+              _dropdownBox(context, model: model, position: position),
+              model.optionQuestion == 2
+                  ? _paragrahpView(context, model: model, position: position)
+                  : _radioBox(context, position: position),
+              _bottomView(
+                context,
+                model: model,
+                position: position,
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -235,16 +245,23 @@ class _CreateFormPageState extends State<CreateFormPage> {
             RadioListTile(
                 title: Row(
                   children: [
-                    Text(
-                      "Add option",
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    Text(" or "),
                     InkWell(
                       onTap: () {
                         context
                             .read<CreateFormCubit>()
-                            .addOptionQuestion(position);
+                            .addOptionQuestion(position, false);
+                      },
+                      child: const Text(
+                        "Add option",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                    const Text(" or "),
+                    InkWell(
+                      onTap: () {
+                        context
+                            .read<CreateFormCubit>()
+                            .addOptionQuestion(position, true);
                       },
                       child: Text(
                         "Add `Other`",
@@ -264,8 +281,6 @@ class _CreateFormPageState extends State<CreateFormPage> {
   Widget _radioBox(BuildContext context, {required int position}) {
     return _listOptionQuestion(position);
   }
-
-  bool _isRequired = false;
 
   Widget _bottomView(BuildContext context,
       {required MQuestion model, required int position}) {
@@ -325,8 +340,12 @@ class _CreateFormPageState extends State<CreateFormPage> {
   Widget _paragrahpView(BuildContext context,
       {required MQuestion model, required int position}) {
     return InputWidget(
-        decoration: InputDecoration(hintText: "Enter answer"),
+        decoration: const InputDecoration(hintText: "Enter answer"),
         value: model.resultParagraph,
-        onChanged: (value) {});
+        onChanged: (value) {
+          context
+              .read<CreateFormCubit>()
+              .onChangeParagraph(value: value, position: position);
+        });
   }
 }

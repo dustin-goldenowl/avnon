@@ -1,19 +1,10 @@
-import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_google/src/data/models/form.dart';
 import 'package:flutter_form_google/src/data/models/question.dart';
 import 'package:flutter_form_google/src/features/create_form/cubit/create_form_state.dart';
-import 'package:flutter_form_google/src/model/form_data_model.dart';
-import 'package:flutter_form_google/src/route/coordinator.dart';
 
 class CreateFormCubit extends Cubit<CreateFormState> {
-  CreateFormCubit() : super(CreateFormState.ds()) {
-    _initEmptyForm();
-  }
-
-  _initEmptyForm() {
-    emit(state.copyWith(listFormData: [MQuestion.empty()]));
-  }
+  CreateFormCubit(MFormData? mFormData) : super(CreateFormState.ds(mFormData));
 
   void addNewForm() {
     List<MQuestion> updatedList = List.from(state.listFormData);
@@ -25,6 +16,11 @@ class CreateFormCubit extends Cubit<CreateFormState> {
     List<MQuestion> updatedList = List.from(state.listFormData);
     updatedList.removeAt(position);
     emit(state.copyWith(listFormData: updatedList));
+  }
+
+  void editFormData(MFormData mFormData) {
+    emit(state.copyWith(
+        titleForm: mFormData.title, listFormData: mFormData.questions));
   }
 
   void isEditTitleForm() {
@@ -45,12 +41,14 @@ class CreateFormCubit extends Cubit<CreateFormState> {
     emit(state.copyWith(listFormData: state.listFormData.toList()));
   }
 
-  void addOptionQuestion(int index) {
+  void addOptionQuestion(int index, bool isAddOther) {
     var list = state.listFormData.toList();
     var data = list[index];
     list[index] = list[index].copyWith(
         resultOption: data.resultOption.toList()
-          ..add("Option ${data.resultOption.length + 1}"));
+          ..add(isAddOther && !data.resultOption.contains("Others")
+              ? "Others"
+              : "Option ${data.resultOption.length + 1}"));
     emit(state.copyWith(listFormData: list.toList()));
   }
 
@@ -86,8 +84,9 @@ class CreateFormCubit extends Cubit<CreateFormState> {
 
   void isRequiredForm({required int position, required bool isRequired}) {
     List<MQuestion> listUpdated = List.from(state.listFormData);
-    listUpdated[position] =
-        listUpdated[position].copyWith(isRequired: isRequired);
+    listUpdated[position] = listUpdated[position].copyWith(
+      isRequired: isRequired,
+    );
     emit(state.copyWith(listFormData: listUpdated));
   }
 
@@ -95,6 +94,13 @@ class CreateFormCubit extends Cubit<CreateFormState> {
     List<MQuestion> listUpdated = List.from(state.listFormData);
     listUpdated[position] =
         listUpdated[position].copyWith(optionQuestion: value);
+    emit(state.copyWith(listFormData: listUpdated));
+  }
+
+  void onChangeParagraph({required String value, required int position}) {
+    List<MQuestion> listUpdated = List.from(state.listFormData);
+    listUpdated[position] =
+        listUpdated[position].copyWith(resultParagraph: value);
     emit(state.copyWith(listFormData: listUpdated));
   }
 }

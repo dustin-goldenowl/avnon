@@ -17,8 +17,9 @@ class AppRouter {
             return SettingsView(controller: GetIt.I<SettingsController>());
           case CreateFormPage.routeName:
             final param = routeSettings.arguments as MFormData?;
-            // TODO
-            return const CreateFormPage();
+            return CreateFormPage(
+              editFormData: param,
+            );
           case ResponsePage.routeName:
             return const ResponsePage();
           case HomePage.routeName:

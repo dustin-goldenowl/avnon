@@ -36,13 +36,22 @@ class _OptionItemViewState extends State<OptionItemView> {
                 });
               },
             )
-          : InkWell(
-              onTap: () {
-                setState(() {
-                  isShowText = true;
-                });
-              },
-              child: Text(widget.result)),
+          : IgnorePointer(
+              ignoring: widget.result == "Others",
+              child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      isShowText = true;
+                    });
+                  },
+                  child: Text(
+                    widget.result,
+                    style: TextStyle(
+                        color: widget.result == "Others"
+                            ? Colors.grey
+                            : Colors.black),
+                  )),
+            ),
       value: widget.result,
       groupValue: widget.groupValue,
       onChanged: widget.onChange,

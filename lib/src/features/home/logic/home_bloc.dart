@@ -16,6 +16,14 @@ class HomeBloc extends Cubit<HomeState> {
     GetIt.I<UserPrefs>().setForms(list);
   }
 
+  void editNewForm(MFormData value) {
+    final list = [...state.froms];
+    final int position = list.indexWhere((element) => element.id == value.id);
+    if (position != -1) list[position] = value;
+    emit(state.copyWith(froms: list));
+    GetIt.I<UserPrefs>().setForms(list);
+  }
+
   void removeForm(String id) {
     final list = [...state.froms];
     list.removeWhere((e) => e.id == id);
