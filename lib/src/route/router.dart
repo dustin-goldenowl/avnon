@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_google/src/data/models/form.dart';
 import 'package:flutter_form_google/src/features/create_form/create_form_page.dart';
 import 'package:flutter_form_google/src/features/home/home_page.dart';
 import 'package:flutter_form_google/src/features/response/response_page.dart';
@@ -15,6 +16,8 @@ class AppRouter {
           case SettingsView.routeName:
             return SettingsView(controller: GetIt.I<SettingsController>());
           case CreateFormPage.routeName:
+            final param = routeSettings.arguments as MFormData?;
+            // TODO
             return const CreateFormPage();
           case ResponsePage.routeName:
             return const ResponsePage();

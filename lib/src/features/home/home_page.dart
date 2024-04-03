@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_form_google/src/data/models/form.dart';
 import 'package:flutter_form_google/src/features/home/logic/home_bloc.dart';
+import 'package:flutter_form_google/src/features/home/widget/form_item_widget.dart';
 import 'package:flutter_form_google/src/localization/localization_utils.dart';
 import 'package:flutter_form_google/src/route/coordinator.dart';
 
@@ -44,16 +43,12 @@ class _HomePageState extends State<HomePage> {
               : ListView.builder(
                   itemCount: state.froms.length,
                   itemBuilder: (context, index) {
-                    return _buildFormItem(context, state.froms[index]);
+                    return FormItemWidget(state.froms[index]);
                   },
                 ),
         );
       },
     );
-  }
-
-  Widget _buildFormItem(BuildContext context, MFormData item) {
-    return Text(item.title);
   }
 
   Center _buildEmpty(BuildContext context) {

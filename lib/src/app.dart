@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
             ],
             supportedLocales: const [Locale('en', '')],
             onGenerateTitle: (BuildContext context) => S.of(context).app_title,
-            theme: ThemeData(),
+            theme:
+                ThemeData(elevatedButtonTheme: const ElevatedButtonThemeData()),
             darkTheme: ThemeData.dark(),
             themeMode: setting.themeMode,
             onGenerateRoute: AppRouter.onGenerateRoute,

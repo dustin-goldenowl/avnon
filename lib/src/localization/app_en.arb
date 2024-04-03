@@ -1,5 +1,11 @@
 {
   "app_title": "AVNON Form",
   "home_add_form_button": "Add Form",
-  "home_list_empty": "List form is empty"
+  "home_list_empty": "List form is empty",
+  "form_action_edit": "Edit",
+  "form_action_see_response": "See response",
+  "form_action_create_response": "Create response",
+  "form_action_delete": "Delete",
+  "form_count_question_one": "{value} question",
+  "form_count_question_many": "{value} questions"
 }
