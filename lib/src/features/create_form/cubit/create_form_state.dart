@@ -14,7 +14,7 @@ class CreateFormState extends Equatable {
 
   bool get isEmptyForm {
     if (titleForm == "Untitled form") return true;
-    return listFormData.any((element) => element.question.isEmpty);
+    return questions.any((element) => element.question.isEmpty);
   }
 
   factory CreateFormState.ds(MFormData? editFormData) {
