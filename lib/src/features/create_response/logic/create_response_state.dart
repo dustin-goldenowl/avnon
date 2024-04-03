@@ -4,13 +4,16 @@ part of 'create_response_bloc.dart';
 class CreateResponseState extends Equatable {
   final MFormData formData;
   final MFormAnswer answers;
+  final List<MQuestionAnswer> answerList;
   const CreateResponseState({
     required this.formData,
     required this.answers,
+    required this.answerList,
   });
   factory CreateResponseState.init(MFormData formData) {
     return CreateResponseState(
       formData: formData,
+      answerList: [],
       answers: MFormAnswer(
         id: const Uuid().v4(),
         fromId: formData.id,
@@ -21,15 +24,17 @@ class CreateResponseState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [formData, answers];
+  List<Object?> get props => [formData, answers, answerList];
 
   CreateResponseState copyWith({
     MFormData? formData,
     MFormAnswer? answers,
+    List<MQuestionAnswer>? answerList,
   }) {
     return CreateResponseState(
       formData: formData ?? this.formData,
       answers: answers ?? this.answers,
+      answerList: answerList ?? this.answerList,
     );
   }
 }

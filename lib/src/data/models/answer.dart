@@ -68,6 +68,16 @@ class MAnswer {
     };
   }
 
+  MAnswer copyWith({
+    String? option,
+    MAnswerType? answerType,
+  }) {
+    return MAnswer(
+      option: option ?? this.option,
+      answerType: answerType ?? this.answerType,
+    );
+  }
+
   factory MAnswer.fromMap(Map<String, dynamic> map) {
     return MAnswer(
       option: map['option'] as String,

@@ -96,7 +96,7 @@ class _CreateFormPageState extends State<CreateFormPage> {
     return BlocBuilder<CreateFormCubit, CreateFormState>(
         builder: (context, state) {
       return Container(
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         alignment: Alignment.centerLeft,
         child: state.isEditTitile
             ? InputWidget(

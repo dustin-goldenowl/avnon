@@ -107,21 +107,12 @@ class _XInputState extends State<InputWidget> {
       minLines: widget.minLines,
       decoration: (widget.decoration ?? const InputDecoration()).copyWith(
           alignLabelWithHint: true,
-          enabledBorder: borderOf(Colors.grey),
-          focusedBorder: borderOf(Colors.grey),
           errorText: widget.errorText,
           labelStyle: const TextStyle(color: Colors.grey),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-          // hintStyle: widget.hintStyle ?? TextStyle(
-          //   fontSize: 15,
-          //   height: kIsWeb ? null : 1.5,
-          //   color: XColors.black.withOpacity(.35),
-          // ),
           floatingLabelBehavior: FloatingLabelBehavior.auto,
           filled: true,
-          // errorStyle:
-          //     XStyles.textNormal.copyWith(fontSize: 12, color: Colors.red),
           errorMaxLines: 1,
           suffixIcon: widget.suffixIcon,
           fillColor: Colors.white),

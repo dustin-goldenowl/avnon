@@ -9,4 +9,5 @@ part 'create_response_state.dart';
 class CreateResponseBLoc extends Cubit<CreateResponseState> {
   CreateResponseBLoc(MFormData formData)
       : super(CreateResponseState.init(formData));
+
 }

@@ -15,7 +15,16 @@ class CreateResponsePage extends StatelessWidget {
       child: BlocBuilder<CreateResponseBLoc, CreateResponseState>(
           builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: Text(item.title)),
+          appBar: AppBar(
+            title: Text(item.title),
+            actions: [
+              ElevatedButton(
+                  onPressed: () {
+                    // TODO
+                  },
+                  child: Text("Submit"))
+            ],
+          ),
           body: CustomScrollView(
             slivers: [
               _buildQuestion(context, state),
@@ -40,7 +49,13 @@ class CreateResponsePage extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-                  child: Text(question.question),
+                  child: Text(
+                    question.question + (question.isRequired ? " ***" : ""),
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
                 QuestionWidget(
                     index: index, question: question, result: result),
