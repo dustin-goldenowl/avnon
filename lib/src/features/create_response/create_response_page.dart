@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_google/src/data/models/form.dart';
 import 'package:flutter_form_google/src/features/create_form/cubit/create_form_cubit.dart';
 import 'package:flutter_form_google/src/features/create_form/cubit/create_form_state.dart';
+import 'package:flutter_form_google/src/features/create_response/logic/create_response_bloc.dart';
 import 'package:flutter_form_google/src/features/create_response/widget/question_widget.dart';
 import 'package:flutter_form_google/src/features/home/logic/home_bloc.dart';
 import 'package:uuid/uuid.dart';
@@ -14,8 +15,8 @@ class CreateResponsePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CreateFormCubit(item),
-      child: BlocBuilder<CreateFormCubit, CreateFormState>(
+      create: (context) => CreateResponseBLoc(item),
+      child: BlocBuilder<CreateResponseBLoc, CreateResponseState>(
           builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -23,12 +24,9 @@ class CreateResponsePage extends StatelessWidget {
             actions: [
               ElevatedButton(
                   onPressed: () {
-                       context.read<HomeBloc>().addNewForm(MFormData(
-                            id: const Uuid().v4(),
-                            title: state.titleForm,
-                            questions: state.questions,
-                            isResult: true,
-                            ));
+                    context
+                        .read<CreateResponseBLoc>()
+                        .onSubmitFormData(context);
                   },
                   child: Text("Submit"))
             ],
@@ -43,7 +41,7 @@ class CreateResponsePage extends StatelessWidget {
     );
   }
 
-  Widget _buildQuestion(BuildContext context, CreateFormState state) {
+  Widget _buildQuestion(BuildContext context, CreateResponseState state) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       sliver: SliverList.separated(
@@ -65,7 +63,9 @@ class CreateResponsePage extends StatelessWidget {
                   ),
                 ),
                 QuestionWidget(
-                    index: index, question: question,),
+                  index: index,
+                  question: question,
+                ),
               ],
             ),
           );

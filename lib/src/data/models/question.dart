@@ -11,6 +11,8 @@ class MQuestion {
   final String resultParagraph;
   final int indexSelected;
   final MQuestionType type;
+  final String valueOther;
+  final String groupValue;
 
   bool get enableRemoveOption => resultOption.length > 2;
 
@@ -22,6 +24,8 @@ class MQuestion {
     required this.type,
     required this.resultParagraph,
     required this.indexSelected,
+    required this.valueOther,
+    required this.groupValue,
   });
 
   static MQuestion empty() {
@@ -33,6 +37,8 @@ class MQuestion {
       type: MQuestionType.multipleChoice,
       resultParagraph: '',
       indexSelected: -1,
+      valueOther: "",
+      groupValue: "",
     );
   }
 
@@ -45,6 +51,8 @@ class MQuestion {
       'indexSelected': indexSelected,
       'resultParagraph': resultParagraph,
       'type': type.toMap(),
+      'valueOther': valueOther,
+      'groupValue': groupValue,
     };
   }
 
@@ -59,6 +67,8 @@ class MQuestion {
       hasOther: map['hasOther'] as bool,
       isRequired: map['isRequired'] as bool,
       type: MQuestionType.fromMap(map['type'] as String),
+      valueOther: map['valueOther'] as String,
+      groupValue: map['groupValue'] as String,
     );
   }
 
@@ -75,6 +85,8 @@ class MQuestion {
     String? resultParagraph,
     int? indexSelected,
     MQuestionType? type,
+    String? valueOther,
+    String? groupValue,
   }) {
     return MQuestion(
       question: question ?? this.question,
@@ -84,6 +96,8 @@ class MQuestion {
       resultParagraph: resultParagraph ?? this.resultParagraph,
       indexSelected: indexSelected ?? this.indexSelected,
       type: type ?? this.type,
+      valueOther: valueOther ?? this.valueOther,
+      groupValue: groupValue ?? this.groupValue,
     );
   }
 }

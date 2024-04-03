@@ -87,7 +87,6 @@ class CreateFormCubit extends Cubit<CreateFormState> {
     emit(state.copyWith(questions: List.from(list)));
   }
 
-
   void duplicateQuestion(int position) {
     List<MQuestion> listUpdated = List.from(state.questions);
     listUpdated.insert(position, state.questions[position]);

@@ -270,6 +270,13 @@ class QuestionItemWidget extends StatelessWidget {
 
   Widget _paragraphView(BuildContext context,
       {required MQuestion model, required int position}) {
-    return const SizedBox();
+    return IgnorePointer(
+      ignoring: true,
+      child: InputWidget(
+        decoration: const InputDecoration(hintText: "Long answer text"),
+        value: model.resultParagraph,
+        onChanged: (value) {},
+      ),
+    );
   }
 }
