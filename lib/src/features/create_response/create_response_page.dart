@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_google/src/data/models/form.dart';
-import 'package:flutter_form_google/src/features/create_response/logic/create_response_bloc.dart';
+import 'package:flutter_form_google/src/features/create_form/cubit/create_form_cubit.dart';
+import 'package:flutter_form_google/src/features/create_form/cubit/create_form_state.dart';
 import 'package:flutter_form_google/src/features/create_response/widget/question_widget.dart';
 
 class CreateResponsePage extends StatelessWidget {
@@ -11,8 +12,8 @@ class CreateResponsePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CreateResponseBLoc(item),
-      child: BlocBuilder<CreateResponseBLoc, CreateResponseState>(
+      create: (context) => CreateFormCubit(item),
+      child: BlocBuilder<CreateFormCubit, CreateFormState>(
           builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -35,14 +36,13 @@ class CreateResponsePage extends StatelessWidget {
     );
   }
 
-  Widget _buildQuestion(BuildContext context, CreateResponseState state) {
+  Widget _buildQuestion(BuildContext context, CreateFormState state) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       sliver: SliverList.separated(
-        itemCount: state.formData.questions.length,
+        itemCount: state.questions.length,
         itemBuilder: (context, index) {
-          final question = state.formData.questions[index];
-          final result = state.answers.question[index];
+          final question = state.questions[index];
           return Card(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -58,7 +58,7 @@ class CreateResponsePage extends StatelessWidget {
                   ),
                 ),
                 QuestionWidget(
-                    index: index, question: question, result: result),
+                    index: index, question: question,),
               ],
             ),
           );
