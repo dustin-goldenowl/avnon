@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_google/src/data/models/question.dart';
 import 'package:flutter_form_google/src/features/create_form/cubit/create_form_cubit.dart';
 import 'package:flutter_form_google/src/features/create_form/cubit/create_form_state.dart';
+import 'package:flutter_form_google/src/features/create_response/logic/create_response_bloc.dart';
 import 'package:flutter_form_google/src/widget/input_widget.dart';
 
 class QuestionParagraphWidget extends StatelessWidget {
@@ -24,9 +25,9 @@ class QuestionParagraphWidget extends StatelessWidget {
         child: InputWidget(
           value: question.resultParagraph,
           onChanged: (value) {
-            context
-                .read<CreateFormCubit>()
-                .onChangeParagraph(value: value, position: index);
+            // context
+            //     .read<CreateResponseBLoc>()
+            //     .onChangeParagraph(value: value, position: index);
           },
           maxLines: 3,
           keyboardType: TextInputType.multiline,

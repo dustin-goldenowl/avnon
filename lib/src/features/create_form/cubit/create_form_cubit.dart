@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_google/src/data/models/form.dart';
 import 'package:flutter_form_google/src/data/models/question.dart';
+import 'package:flutter_form_google/src/data/models/question_type.dart';
 import 'package:flutter_form_google/src/features/create_form/cubit/create_form_state.dart';
 
 class CreateFormCubit extends Cubit<CreateFormState> {
@@ -41,23 +42,33 @@ class CreateFormCubit extends Cubit<CreateFormState> {
     emit(state.copyWith(questions: state.questions.toList()));
   }
 
-  void addOptionQuestion(int index, bool isAddOther) {
+  void addOptionQuestion(int index) {
     var list = state.questions.toList();
     var data = list[index];
     list[index] = list[index].copyWith(
         resultOption: data.resultOption.toList()
-          ..add(isAddOther && !data.resultOption.contains("Others")
-              ? "Others"
-              : "Option ${data.resultOption.length + 1}"));
+          ..add("Option ${data.resultOption.length + 1}"));
     emit(state.copyWith(questions: list.toList()));
   }
 
-  void changeOptionQuestion({required int index, required int indexSelected}) {
-    var list = state.questions.toList();
-    var data = list[index];
-    data = data.copyWith(indexSelected: indexSelected);
-    list[index] = data;
-    emit(state.copyWith(questions: List.from(list)));
+  void onRemoveOptionQuestion(int index) {
+    _updateQuestionAt(state.indexQuestion, (p0) {
+      var options = p0.resultOption.toList();
+      options.removeAt(index);
+      return p0.copyWith(resultOption: options);
+    });
+  }
+
+  void onChangeOptionOther(int index, bool value) {
+    _updateQuestionAt(index, (e) => e.copyWith(hasOther: value));
+  }
+
+  void changeIndexOption(int index) {
+    emit(state.copyWith(indexOption: index));
+  }
+
+  void changeIndexQuestion(int index) {
+    emit(state.copyWith(indexQuestion: index, indexOption: 0));
   }
 
   void updateResultOption(
@@ -76,16 +87,10 @@ class CreateFormCubit extends Cubit<CreateFormState> {
     emit(state.copyWith(questions: List.from(list)));
   }
 
-  void onUpdateAnswer({required int index, required int indexSelected}) {
-    List<MQuestion> listUpdated = List.from(state.questions);
-    listUpdated[index] =
-        listUpdated[index].copyWith(indexSelected: indexSelected);
-    emit(state.copyWith(questions: listUpdated));
-  }
 
   void duplicateQuestion(int position) {
     List<MQuestion> listUpdated = List.from(state.questions);
-    listUpdated.add(state.questions[position]);
+    listUpdated.insert(position, state.questions[position]);
     emit(state.copyWith(questions: listUpdated));
   }
 
@@ -97,17 +102,16 @@ class CreateFormCubit extends Cubit<CreateFormState> {
     emit(state.copyWith(questions: listUpdated));
   }
 
-  void selectQuestionOption({required int position, required int value}) {
+  void selectQuestionOption(
+      {required int position, required MQuestionType value}) {
     List<MQuestion> listUpdated = List.from(state.questions);
-    listUpdated[position] =
-        listUpdated[position].copyWith(optionQuestion: value);
+    listUpdated[position] = listUpdated[position].copyWith(type: value);
     emit(state.copyWith(questions: listUpdated));
   }
 
-  void onChangeParagraph({required String value, required int position}) {
-    List<MQuestion> listUpdated = List.from(state.questions);
-    listUpdated[position] =
-        listUpdated[position].copyWith(resultParagraph: value);
-    emit(state.copyWith(questions: listUpdated));
+  void _updateQuestionAt(int index, MQuestion Function(MQuestion) onChange) {
+    final list = [...state.questions];
+    list[index] = onChange(list[index]);
+    emit(state.copyWith(questions: list));
   }
 }

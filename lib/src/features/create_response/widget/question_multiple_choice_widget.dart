@@ -39,9 +39,9 @@ class QuestionMultipleChoiceWidget extends StatelessWidget {
         groupValue: state.questions[index]
             .resultOption[state.questions[index].indexSelected],
         onChanged: (String? value) {
-          context
-              .read<CreateFormCubit>()
-              .onUpdateAnswer(index: index, indexSelected: indexSelected);
+          // context
+          //     .read<CreateFormCubit>()
+          //     .onUpdateAnswer(index: index, indexSelected: indexSelected);
         },
       );
     });
