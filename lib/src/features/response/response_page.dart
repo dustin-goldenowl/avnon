@@ -3,17 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_google/src/data/models/form.dart';
 import 'package:flutter_form_google/src/data/models/question.dart';
 import 'package:flutter_form_google/src/data/models/question_type.dart';
+import 'package:flutter_form_google/src/features/home/logic/home_bloc.dart';
 import 'package:flutter_form_google/src/features/response/logic/response_bloc.dart';
 
 class ResponsePage extends StatelessWidget {
-  const ResponsePage({super.key, required this.formData});
+  const ResponsePage({super.key, required this.formData, required this.result});
   final MFormData formData;
+  final List<MFormData> result;
+
   static const routeName = '/response';
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ResponseBloc(formData),
+      create: (context) => ResponseBloc(formData, result),
       child:
           BlocBuilder<ResponseBloc, ResponseState>(builder: (context, state) {
         final questions = state.formData.questions;

@@ -21,9 +21,9 @@ class ResponseState extends Equatable {
     return data;
   }
 
-  factory ResponseState.ds(MFormData formData) {
+  factory ResponseState.ds(MFormData formData, List<MFormData> results) {
     final froms = GetIt.I<UserPrefs>().getResponse(formData.id);
-    return ResponseState(formData: formData, results: froms);
+    return ResponseState(formData: formData, results: results);
   }
 
   @override

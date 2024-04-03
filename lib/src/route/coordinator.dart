@@ -13,8 +13,12 @@ class AppCoordinator {
     );
   }
 
-  static showResponse(BuildContext context, {required MFormData item}) {
-    Navigator.pushNamed(context, ResponsePage.routeName, arguments: item);
+  static showResponse(BuildContext context,
+      {required MFormData item, required List<MFormData> results}) {
+    Navigator.pushNamed(context, ResponsePage.routeName, arguments: {
+      'item': item,
+      'result': results,
+    });
   }
 
   static showCreateResponse(BuildContext context, {required MFormData item}) {
