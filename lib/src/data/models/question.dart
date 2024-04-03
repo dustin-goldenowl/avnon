@@ -67,9 +67,11 @@ class MQuestion {
   factory MQuestion.fromMap(Map<String, dynamic> map) {
     return MQuestion(
       question: map['question'] as String,
-      resultOption: List<String>.from((map['resultOption'] as List<String>)),
-      resultParagraph: map['resultParagraph'] as String,
-      image: map['image'] != null ? map['image'] as String : null,
+      resultOption: (map['resultOption'] is List)
+          ? (map['resultOption'] as List).map((e) => '$e').toList()
+          : [],
+      resultParagraph: map['resultParagraph'] as String? ?? '',
+      image: map['image'] as String?,
       isRequired: map['isRequired'] as bool,
       optionQuestion: map['optionQuestion'] as int,
       indexSelected: map['indexSelected'] as int,
