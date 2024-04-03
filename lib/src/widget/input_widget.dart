@@ -105,13 +105,14 @@ class _XInputState extends State<InputWidget> {
       obscureText: obscureText,
       maxLines: widget.maxLines,
       minLines: widget.minLines,
-      decoration: (widget.decoration ?? InputDecoration()).copyWith(
+      decoration: (widget.decoration ?? const InputDecoration()).copyWith(
           alignLabelWithHint: true,
           enabledBorder: borderOf(Colors.grey),
           focusedBorder: borderOf(Colors.grey),
           errorText: widget.errorText,
-          labelStyle: TextStyle(color: Colors.grey),
-          contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+          labelStyle: const TextStyle(color: Colors.grey),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
           // hintStyle: widget.hintStyle ?? TextStyle(
           //   fontSize: 15,
           //   height: kIsWeb ? null : 1.5,
