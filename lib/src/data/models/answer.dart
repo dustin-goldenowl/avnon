@@ -1,25 +1,77 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
+import 'package:flutter_form_google/src/data/models/answer_type.dart';
 import 'package:flutter_form_google/src/data/models/question_type.dart';
+
+class MFormAnswer {
+  final String id;
+  final String fromId;
+  final List<MQuestionAnswer> question;
+  MFormAnswer({
+    required this.id,
+    required this.fromId,
+    required this.question,
+  });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'fromId': fromId,
+      'question': question.map((x) => x.toMap()).toList(),
+    };
+  }
+
+  factory MFormAnswer.fromMap(Map<String, dynamic> map) {
+    return MFormAnswer(
+      id: map['id'] as String,
+      fromId: map['fromId'] as String,
+      question: List<MQuestionAnswer>.from(
+        (map['question'] as List<int>).map<MQuestionAnswer>(
+          (x) => MQuestionAnswer.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory MFormAnswer.fromJson(String source) =>
+      MFormAnswer.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  MFormAnswer copyWith({
+    String? id,
+    String? fromId,
+    List<MQuestionAnswer>? question,
+  }) {
+    return MFormAnswer(
+      id: id ?? this.id,
+      fromId: fromId ?? this.fromId,
+      question: question ?? this.question,
+    );
+  }
+}
 
 class MAnswer {
   String option;
-  String result;
+  MAnswerType answerType;
 
-  MAnswer({this.option = '', this.result = ''});
+  MAnswer({this.option = '', this.answerType = MAnswerType.type});
+  factory MAnswer.select(String value) =>
+      MAnswer(option: value, answerType: MAnswerType.select);
+  factory MAnswer.type(String value) =>
+      MAnswer(option: value, answerType: MAnswerType.type);
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'option': option,
-      'result': result,
+      'answerType': answerType.toMap(),
     };
   }
 
   factory MAnswer.fromMap(Map<String, dynamic> map) {
     return MAnswer(
       option: map['option'] as String,
-      result: map['result'] as String,
+      answerType: MAnswerType.fromMap(map['result'] as String),
     );
   }
 
@@ -32,40 +84,24 @@ class MAnswer {
 class MQuestionAnswer {
   String question;
   int id;
-  MQuestionType type;
-  List<MAnswer> answers;
-
-  MAnswer get answer {
-    if (answers.isEmpty) {
-      answers = [MAnswer()];
-    }
-    return answers[0];
-  }
-
-  set answer(MAnswer answer) {
-    answers = [answer];
-  }
+  MAnswer answer;
 
   MQuestionAnswer({
     required this.id,
     required this.question,
-    required this.type,
-    required this.answers,
+    required this.answer,
   });
 
-  bool enableButton() {
-    if (type == MQuestionType.paragraph) {
-      return true;
-    }
-    return answers.isNotEmpty;
+  factory MQuestionAnswer.create(int index) {
+    return MQuestionAnswer(id: index, question: '', answer: MAnswer());
   }
 
-  bool validate() {
+  bool validate(MQuestionType type) {
     switch (type) {
       case MQuestionType.paragraph:
         return answer.option.isNotEmpty;
       case MQuestionType.multipleChoice:
-        return answers.isNotEmpty;
+        return answer.option.isNotEmpty;
     }
   }
 
@@ -73,8 +109,7 @@ class MQuestionAnswer {
     return <String, dynamic>{
       'question': question,
       'id': id,
-      'type': type.toMap(),
-      'answers': answers.map((x) => x.toMap()).toList(),
+      'answer': answer.toMap(),
     };
   }
 
@@ -82,12 +117,7 @@ class MQuestionAnswer {
     return MQuestionAnswer(
       question: map['question'] as String,
       id: map['id'] as int,
-      type: MQuestionType.fromMap(map['type'] as String),
-      answers: List<MAnswer>.from(
-        (map['answers'] as List<int>).map<MAnswer>(
-          (x) => MAnswer.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      answer: MAnswer.fromMap(map['answer']),
     );
   }
 

@@ -7,7 +7,7 @@ class MQuestion {
   final String resultParagraph;
   final String? image;
   final bool isRequired;
-  final int optionQuestion;
+  final int optionQuestion; // TODO MQuestionType
   MQuestion({
     required this.question,
     required this.resultOption,
