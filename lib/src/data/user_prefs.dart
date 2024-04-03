@@ -18,7 +18,8 @@ class UserPrefs {
     if (value == null) {
       _prefs.remove(_keys.from);
     } else {
-      _prefs.setString(_keys.from, jsonEncode(value.map((e) => e.toMap())));
+      final data = jsonEncode(value.map((e) => e.toMap()).toList());
+      _prefs.setString(_keys.from, data);
     }
   }
 
@@ -30,9 +31,9 @@ class UserPrefs {
       } else {
         final map = jsonDecode(value);
         if (map is Iterable) {
-          return map
-              .map((e) => MFormData.fromMap(map as Map<String, dynamic>))
-              .toList();
+          return map.map((e) {
+            return MFormData.fromMap(e as Map<String, dynamic>);
+          }).toList();
         } else {
           return [];
         }

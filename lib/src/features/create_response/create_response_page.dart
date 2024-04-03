@@ -1,35 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_google/src/data/models/form.dart';
-import 'package:flutter_form_google/src/data/models/question.dart';
+import 'package:flutter_form_google/src/features/create_response/logic/create_response_bloc.dart';
+import 'package:flutter_form_google/src/features/create_response/widget/question_widget.dart';
 
-class CreateRepsonsePage extends StatelessWidget {
-  const CreateRepsonsePage({super.key, required this.editFormData});
-  final MFormData editFormData;
-
+class CreateResponsePage extends StatelessWidget {
+  const CreateResponsePage({super.key, required this.item});
+  static const routeName = '/create-response';
+  final MFormData item;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Answer Question"),
-      ),
-      body: _body(context),
+    return BlocProvider(
+      create: (context) => CreateResponseBLoc(item),
+      child: BlocBuilder<CreateResponseBLoc, CreateResponseState>(
+          builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(title: Text(item.title)),
+          body: CustomScrollView(
+            slivers: [
+              _buildQuestion(context, state),
+            ],
+          ),
+        );
+      }),
     );
   }
 
-  Widget _body(BuildContext context) {
-    return ListView.builder(
-        itemCount: editFormData.questions.length,
-        itemBuilder: (context, position) {
-          return _itemQuestion(context,
-              mQuestion: editFormData.questions[position]);
-        });
-  }
-
-  Widget _itemQuestion(BuildContext context, {required MQuestion mQuestion}) {
-    return Card(
-      elevation: 2,
-      child: Column(
-        children: [Text(mQuestion.question)],
+  Widget _buildQuestion(BuildContext context, CreateResponseState state) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      sliver: SliverList.separated(
+        itemCount: state.formData.questions.length,
+        itemBuilder: (context, index) {
+          final question = state.formData.questions[index];
+          final result = state.answers.question[index];
+          return Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                  child: Text(question.question),
+                ),
+                QuestionWidget(
+                    index: index, question: question, result: result),
+              ],
+            ),
+          );
+        },
+        separatorBuilder: (_, __) {
+          return const SizedBox(height: 16);
+        },
       ),
     );
   }

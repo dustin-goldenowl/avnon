@@ -7,7 +7,7 @@ class MFormData {
   final String id;
   final String title;
   final List<MQuestion> questions;
-  MFormData( {
+  MFormData({
     required this.id,
     required this.title,
     required this.questions,
@@ -25,11 +25,16 @@ class MFormData {
     return MFormData(
       id: map['id'] as String,
       title: map['title'] as String,
-      questions: List<MQuestion>.from((map['questions'] as List<int>).map<MQuestion>((x) => MQuestion.fromMap(x as Map<String,dynamic>),),),
+      questions: List<MQuestion>.from(
+        (map['questions'] as List).map<MQuestion>(
+          (x) => MQuestion.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory MFormData.fromJson(String source) => MFormData.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory MFormData.fromJson(String source) =>
+      MFormData.fromMap(json.decode(source) as Map<String, dynamic>);
 }
