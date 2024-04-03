@@ -14,7 +14,7 @@ class AppCoordinator {
   }
 
   static showResponse(BuildContext context, {required MFormData item}) {
-    Navigator.pushNamed(context, ResponsePage.routeName);
+    Navigator.pushNamed(context, ResponsePage.routeName, arguments: item);
   }
 
   static showCreateResponse(BuildContext context, {required MFormData item}) {

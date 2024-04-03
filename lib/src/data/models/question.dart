@@ -2,8 +2,10 @@
 import 'dart:convert';
 
 import 'package:flutter_form_google/src/data/models/question_type.dart';
+import 'package:uuid/uuid.dart';
 
 class MQuestion {
+  final String id;
   final String question;
   final List<String> resultOption;
   final bool hasOther;
@@ -15,6 +17,7 @@ class MQuestion {
   bool get enableRemoveOption => resultOption.length > 2;
 
   MQuestion({
+    required this.id,
     required this.question,
     required this.resultOption,
     required this.hasOther,
@@ -26,6 +29,7 @@ class MQuestion {
 
   static MQuestion empty() {
     return MQuestion(
+      id: const Uuid().v4(),
       question: "",
       resultOption: ["Option 1", "Option 2"],
       isRequired: false,
@@ -38,6 +42,7 @@ class MQuestion {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'question': question,
       'resultOption': resultOption,
       'hasOther': hasOther,
@@ -50,6 +55,7 @@ class MQuestion {
 
   factory MQuestion.fromMap(Map<String, dynamic> map) {
     return MQuestion(
+      id: map['id'] as String? ?? '',
       question: map['question'] as String,
       indexSelected: map['indexSelected'] as int? ?? -1,
       resultParagraph: map['resultParagraph'] as String? ?? '',
@@ -68,6 +74,7 @@ class MQuestion {
       MQuestion.fromMap(json.decode(source) as Map<String, dynamic>);
 
   MQuestion copyWith({
+    String? id,
     String? question,
     List<String>? resultOption,
     bool? hasOther,
@@ -77,6 +84,7 @@ class MQuestion {
     MQuestionType? type,
   }) {
     return MQuestion(
+      id: id ?? this.id,
       question: question ?? this.question,
       resultOption: resultOption ?? this.resultOption,
       hasOther: hasOther ?? this.hasOther,
