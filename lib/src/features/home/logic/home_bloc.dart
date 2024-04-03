@@ -30,4 +30,13 @@ class HomeBloc extends Cubit<HomeState> {
     emit(state.copyWith(froms: list));
     GetIt.I<UserPrefs>().setForms(list);
   }
+
+
+  void addNewResult(MFormData value) {
+    final list = [...state.froms];
+    list.add(value);
+    emit(state.copyWith(froms: list));
+    GetIt.I<UserPrefs>().setForms(list);
+  }
+  
 }

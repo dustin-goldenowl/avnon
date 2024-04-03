@@ -13,7 +13,6 @@ class QuestionMultipleChoiceWidget extends StatelessWidget {
 
   final int index;
   final MQuestion question;
-  // final MQuestionAnswer result;
   @override
   Widget build(BuildContext context) {
     return _listRadio();

@@ -38,12 +38,12 @@ class _HomePageState extends State<HomePage> {
             },
             child: const Icon(Icons.add),
           ),
-          body: state.froms.isEmpty
+          body: state.fromsFilter.isEmpty
               ? _buildEmpty(context)
               : ListView.builder(
-                  itemCount: state.froms.length,
+                  itemCount: state.fromsFilter.length,
                   itemBuilder: (context, index) {
-                    return FormItemWidget(state.froms[index]);
+                    return FormItemWidget(state.fromsFilter[index]);
                   },
                 ),
         );

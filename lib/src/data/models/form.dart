@@ -7,10 +7,12 @@ class MFormData {
   final String id;
   final String title;
   final List<MQuestion> questions;
+  final bool isResult;
   MFormData({
     required this.id,
     required this.title,
     required this.questions,
+    this.isResult = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,6 +20,7 @@ class MFormData {
       'id': id,
       'title': title,
       'questions': questions.map((x) => x.toMap()).toList(),
+      'isResult': isResult,
     };
   }
 
@@ -30,6 +33,7 @@ class MFormData {
           (x) => MQuestion.fromMap(x as Map<String, dynamic>),
         ),
       ),
+      isResult: map['isResult'] as bool,
     );
   }
 

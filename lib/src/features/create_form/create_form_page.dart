@@ -41,7 +41,7 @@ class _CreateFormPageState extends State<CreateFormPage> {
                         context.read<HomeBloc>().editNewForm(MFormData(
                             id: widget.editFormData!.id,
                             title: state.titleForm,
-                            questions: state.questions));
+                            questions: state.questions, ));
                       } else {
                         context.read<HomeBloc>().addNewForm(MFormData(
                             id: const Uuid().v4(),

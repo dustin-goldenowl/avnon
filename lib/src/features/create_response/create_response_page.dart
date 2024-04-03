@@ -4,6 +4,8 @@ import 'package:flutter_form_google/src/data/models/form.dart';
 import 'package:flutter_form_google/src/features/create_form/cubit/create_form_cubit.dart';
 import 'package:flutter_form_google/src/features/create_form/cubit/create_form_state.dart';
 import 'package:flutter_form_google/src/features/create_response/widget/question_widget.dart';
+import 'package:flutter_form_google/src/features/home/logic/home_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateResponsePage extends StatelessWidget {
   const CreateResponsePage({super.key, required this.item});
@@ -21,7 +23,12 @@ class CreateResponsePage extends StatelessWidget {
             actions: [
               ElevatedButton(
                   onPressed: () {
-                    // TODO
+                       context.read<HomeBloc>().addNewForm(MFormData(
+                            id: const Uuid().v4(),
+                            title: state.titleForm,
+                            questions: state.questions,
+                            isResult: true,
+                            ));
                   },
                   child: Text("Submit"))
             ],

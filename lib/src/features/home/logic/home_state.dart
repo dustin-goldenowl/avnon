@@ -11,6 +11,12 @@ class HomeState extends Equatable {
     return HomeState(froms: froms);
   }
 
+  List<MFormData> get fromsFilter =>
+      froms.where((e) => e.isResult == false).toList();
+
+  List<MFormData> get resultData =>
+      froms.where((e) => e.isResult == true).toList();
+
   @override
   List<Object?> get props => [froms];
 
