@@ -1,0 +1,6 @@
+{
+  "appTitle": "flutter_form_google",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}
