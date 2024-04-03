@@ -8,6 +8,15 @@ class MFormData {
   final String title;
   final List<MQuestion> questions;
   final bool isResult;
+
+  MQuestion? questionOfId(String id) {
+    try {
+      return questions.firstWhere((element) => element.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
+
   MFormData({
     required this.id,
     required this.title,

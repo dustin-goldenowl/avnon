@@ -23,7 +23,8 @@ class AppRouter {
             final param = routeSettings.arguments as MFormData;
             return CreateResponsePage(item: param);
           case ResponsePage.routeName:
-            return const ResponsePage();
+            final param = routeSettings.arguments as MFormData;
+            return  ResponsePage(formData: param);
           case HomePage.routeName:
           default:
             return const HomePage();
