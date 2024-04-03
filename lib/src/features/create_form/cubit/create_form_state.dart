@@ -10,6 +10,7 @@ class CreateFormState extends Equatable {
     required this.titleForm,
     required this.isEditTitile,
   });
+  
 
   factory CreateFormState.ds() {
     return const CreateFormState(

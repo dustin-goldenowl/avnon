@@ -48,8 +48,9 @@ class CreateFormCubit extends Cubit<CreateFormState> {
   void addOptionQuestion(int index) {
     var list = state.listFormData.toList();
     var data = list[index];
-    list[index] = list[index]
-        .copyWith(resultOption: data.resultOption.toList()..add("New option"));
+    list[index] = list[index].copyWith(
+        resultOption: data.resultOption.toList()
+          ..add("Option ${data.resultOption.length + 1}"));
     emit(state.copyWith(listFormData: list.toList()));
   }
 
@@ -61,7 +62,39 @@ class CreateFormCubit extends Cubit<CreateFormState> {
     emit(state.copyWith(listFormData: List.from(list)));
   }
 
-  void duplicateQuestion(int position){
+  void updateResultOption(
+      {required int index,
+      required int indexSelected,
+      required String result}) {
+    var list = state.listFormData.toList();
+    var data = list[index];
+    var option = data.resultOption[indexSelected];
+    option = result;
 
+    data.resultOption[indexSelected] = option;
+
+    data = data.copyWith(resultOption: data.resultOption);
+    list[index] = data;
+    emit(state.copyWith(listFormData: List.from(list)));
+  }
+
+  void duplicateQuestion(int position) {
+    List<MQuestion> listUpdated = List.from(state.listFormData);
+    listUpdated.add(state.listFormData[position]);
+    emit(state.copyWith(listFormData: listUpdated));
+  }
+
+  void isRequiredForm({required int position, required bool isRequired}) {
+    List<MQuestion> listUpdated = List.from(state.listFormData);
+    listUpdated[position] =
+        listUpdated[position].copyWith(isRequired: isRequired);
+    emit(state.copyWith(listFormData: listUpdated));
+  }
+
+  void selectQuestionOption({required int position, required int value}) {
+    List<MQuestion> listUpdated = List.from(state.listFormData);
+    listUpdated[position] =
+        listUpdated[position].copyWith(optionQuestion: value);
+    emit(state.copyWith(listFormData: listUpdated));
   }
 }
