@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_google/src/data/models/form.dart';
 import 'package:flutter_form_google/src/data/models/question.dart';
 import 'package:flutter_form_google/src/data/models/question_type.dart';
-import 'package:flutter_form_google/src/features/home/logic/home_bloc.dart';
 import 'package:flutter_form_google/src/features/response/logic/response_bloc.dart';
 
 class ResponsePage extends StatelessWidget {
@@ -84,12 +83,31 @@ class ResponsePage extends StatelessWidget {
 
   Widget _buildMultipleChoice(
       BuildContext context, MQuestion item, List<MQuestion> responses) {
-    // TODO
-    Map<String, int> chartData = {};
+    Map<int, int> chartData = {};
 
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [],
+    for (MQuestion index in responses) {
+      chartData[index.indexSelected] =
+          (chartData[index.indexSelected] ?? 0) + 1;
+    }
+
+    return Column(
+      children: [
+        ListView.builder(
+            shrinkWrap: true,
+            itemCount: item.resultOption.length,
+            itemBuilder: (context, index) {
+              return _itemResponse(
+                  item.resultOption[index], chartData[index] ?? 0);
+            }),
+        if (item.hasOther)
+          Container(color: Colors.amber, child: Text(item.valueOther))
+      ],
+    );
+  }
+
+  Widget _itemResponse(String question, int quantity) {
+    return Row(
+      children: [Text(question + " - " + quantity.toString())],
     );
   }
 }

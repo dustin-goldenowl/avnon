@@ -23,6 +23,27 @@ class CreateResponseState extends Equatable {
     );
   }
 
+  bool get isValid {
+    bool isEnable = false;
+    for (var item in questions) {
+      if (item.hasOther && item.valueOther.isNotEmpty) {
+        isEnable = true;
+      }
+
+      if (!item.hasOther && item.indexSelected != -1) {
+        isEnable = true;
+      }
+
+      if (item.resultParagraph.isEmpty) {
+        isEnable = false;
+      } else {
+        isEnable = true;
+      }
+    }
+
+    return isEnable;
+  }
+
   @override
   List<Object?> get props => [
         formData,

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_google/src/data/models/answer.dart';
 import 'package:flutter_form_google/src/data/models/form.dart';
 import 'package:flutter_form_google/src/data/models/question.dart';
+import 'package:flutter_form_google/src/data/models/question_type.dart';
 import 'package:flutter_form_google/src/features/home/logic/home_bloc.dart';
 import 'package:uuid/uuid.dart';
 

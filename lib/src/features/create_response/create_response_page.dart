@@ -22,13 +22,18 @@ class CreateResponsePage extends StatelessWidget {
           appBar: AppBar(
             title: Text(item.title),
             actions: [
-              ElevatedButton(
-                  onPressed: () {
-                    context
-                        .read<CreateResponseBLoc>()
-                        .onSubmitFormData(context);
-                  },
-                  child: Text("Submit"))
+              Opacity(
+                opacity: state.isValid ? 1 : 0.5,
+                child: ElevatedButton(
+                    onPressed: () {
+                      if (state.isValid) {
+                        context
+                            .read<CreateResponseBLoc>()
+                            .onSubmitFormData(context);
+                      }
+                    },
+                    child: Text("Submit")),
+              )
             ],
           ),
           body: CustomScrollView(
