@@ -23,11 +23,8 @@ class AppRouter {
             final param = routeSettings.arguments as MFormData;
             return CreateResponsePage(item: param);
           case ResponsePage.routeName:
-            final param = routeSettings.arguments as Map<String, dynamic>;
-            return ResponsePage(
-              formData: param['item'] as MFormData,
-              result: param['result'] as List<MFormData>,
-            );
+            final param = routeSettings.arguments as MFormData;
+            return ResponsePage(formData: param);
           case HomePage.routeName:
           default:
             return const HomePage();

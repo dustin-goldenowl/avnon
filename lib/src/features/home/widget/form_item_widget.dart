@@ -8,16 +8,14 @@ import 'package:flutter_form_google/src/route/coordinator.dart';
 enum FormOptionAction { edit, seeResponse, createResponse, delete }
 
 class FormItemWidget extends StatelessWidget {
-  const FormItemWidget(this.item, this.results, {super.key});
+  const FormItemWidget(this.item, {super.key});
   final MFormData item;
-  final List<MFormData> results;
   Future onActionSelected(BuildContext context, FormOptionAction action) async {
     switch (action) {
       case FormOptionAction.edit:
         return AppCoordinator.showCreateForm(context, editItem: item);
       case FormOptionAction.seeResponse:
-        return AppCoordinator.showResponse(context,
-            item: item, results: results);
+        return AppCoordinator.showResponse(context, item: item);
       case FormOptionAction.createResponse:
         return AppCoordinator.showCreateResponse(context, item: item);
       case FormOptionAction.delete:

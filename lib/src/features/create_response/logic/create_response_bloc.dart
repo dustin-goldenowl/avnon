@@ -1,11 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_form_google/src/data/models/answer.dart';
 import 'package:flutter_form_google/src/data/models/form.dart';
 import 'package:flutter_form_google/src/data/models/question.dart';
-import 'package:flutter_form_google/src/data/models/question_type.dart';
-import 'package:flutter_form_google/src/features/home/logic/home_bloc.dart';
+import 'package:flutter_form_google/src/data/user_prefs.dart';
+import 'package:get_it/get_it.dart';
 import 'package:uuid/uuid.dart';
 
 part 'create_response_state.dart';
@@ -37,11 +36,12 @@ class CreateResponseBLoc extends Cubit<CreateResponseState> {
 
   void onSubmitFormData(BuildContext context) {
     Navigator.pop(context);
-    context.read<HomeBloc>().addNewResult(MFormData(
-          id: const Uuid().v4(),
-          title: state.formData.title,
-          questions: state.questions,
-          isResult: true,
-        ));
+    final value = MFormData(
+      id: const Uuid().v4(),
+      title: state.formData.title,
+      questions: state.questions,
+      isResult: true,
+    );
+    GetIt.I<UserPrefs>().setResponse(state.formData.id, value);
   }
 }

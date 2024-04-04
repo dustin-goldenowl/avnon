@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        final results = state.resultData;
         return Scaffold(
           appBar: AppBar(title: Text(S.of(context).app_title)),
           floatingActionButton: FloatingActionButton(
@@ -44,7 +43,7 @@ class _HomePageState extends State<HomePage> {
               : ListView.builder(
                   itemCount: state.fromsFilter.length,
                   itemBuilder: (context, index) {
-                    return FormItemWidget(state.fromsFilter[index], results);
+                    return FormItemWidget(state.fromsFilter[index]);
                   },
                 ),
         );

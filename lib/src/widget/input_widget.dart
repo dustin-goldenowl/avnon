@@ -75,11 +75,6 @@ class _XInputState extends State<InputWidget> {
     }
   }
 
-  static InputBorder borderOf(Color color) => OutlineInputBorder(
-        borderSide: BorderSide(color: color, width: 1),
-        borderRadius: BorderRadius.circular(15),
-      );
-
   @override
   Widget build(BuildContext context) {
     return TextFormField(

@@ -49,7 +49,7 @@ class UserPrefs {
     final responses = getResponse(fromId);
     responses.add(newResponse);
     final data = jsonEncode(responses.map((e) => e.toMap()).toList());
-    _prefs.setString(_keys.from, data);
+    _prefs.setString(_keys.responseOf(fromId), data);
   }
 
   List<MFormData> getResponse(String fromId) {

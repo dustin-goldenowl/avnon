@@ -8,6 +8,5 @@ import 'package:get_it/get_it.dart';
 part 'response_state.dart';
 
 class ResponseBloc extends Cubit<ResponseState> {
-  ResponseBloc(MFormData formData, List<MFormData> results)
-      : super(ResponseState.ds(formData, results));
+  ResponseBloc(MFormData formData) : super(ResponseState.ds(formData));
 }

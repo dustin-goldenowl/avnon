@@ -6,16 +6,15 @@ import 'package:flutter_form_google/src/data/models/question_type.dart';
 import 'package:flutter_form_google/src/features/response/logic/response_bloc.dart';
 
 class ResponsePage extends StatelessWidget {
-  const ResponsePage({super.key, required this.formData, required this.result});
+  const ResponsePage({super.key, required this.formData});
   final MFormData formData;
-  final List<MFormData> result;
 
   static const routeName = '/response';
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ResponseBloc(formData, result),
+      create: (context) => ResponseBloc(formData),
       child:
           BlocBuilder<ResponseBloc, ResponseState>(builder: (context, state) {
         final questions = state.formData.questions;
@@ -107,7 +106,7 @@ class ResponsePage extends StatelessWidget {
 
   Widget _itemResponse(String question, int quantity) {
     return Row(
-      children: [Text(question + " - " + quantity.toString())],
+      children: [Text("$question - $quantity")],
     );
   }
 }
